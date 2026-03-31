@@ -1,55 +1,69 @@
 #!/bin/bash
 
+# 颜色定义
+GREEN='\033[32m'
+YELLOW='\033[33m'
+RED='\033[31m'
+RESET='\033[0m'
+
+# 项目名称
+PROJECT_NAME="董云 Docker 管理脚本 V1.0"
+
 # 函数：显示菜单
 show_menu() {
     clear
-    # 使用 -e 参数让转义字符生效
-    # \033[32m 是绿色，\033[0m 是重置颜色
     echo "========================================"
-    echo -e "\033[32m      欢迎使用我的第一个菜单脚本\033[0m"
+    # 使用绿色显示标题
+    echo -e "${GREEN}      $PROJECT_NAME${RESET}"
     echo "========================================"
-    # \033[33m 是黄色
-    echo -e "\033[33m1. 显示系统信息\033[0m"
-    echo -e "\033[33m2. 查看磁盘空间\033[0m"
-    echo -e "\033[33m3. 查看内存使用\033[0m"
-    echo -e "\033[33m4. 退出脚本\033[0m"
+    # 使用黄色显示选项
+    echo -e "${YELLOW}1. 一键部署 Docker 项目${RESET}"
+    echo -e "${YELLOW}2. 一键部署脚本项目${RESET}"
+    echo -e "${YELLOW}3. 查看运行容器${RESET}"
+    echo "----------------------------------------"
+    echo -e "${RED}0. 退出脚本${RESET}"
     echo "========================================"
-    # \033[34m 是蓝色
-    echo -e -n "\033[34m请输入选项 [1-4]: \033[0m"
+    echo -n "请输入选项 [0-3]: "
 }
 
 # 函数：处理用户选择
 handle_choice() {
     case $1 in
         1)
-            # \033[36m 是青色
-            echo -e "\033[36m正在获取系统信息...\033[0m"
-            uname -a
+            echo -e "${BLUE}=> 正在执行：一键部署 Docker 项目${RESET}"
+            echo "此功能将引导你安装 Portainer, Jellyfin 等常用 Docker 应用..."
+            # 这里可以添加具体的部署命令，例如：
+            # docker run -d --name portainer -p 9000:9000 portainer/portainer-ce
+            read -p "按任意键返回菜单..."
             ;;
         2)
-            echo -e "\033[36m正在查看磁盘空间...\033[0m"
-            df -h
+            echo -e "${BLUE}=> 正在执行：一键部署脚本项目${RESET}"
+            echo "此功能将引导你安装青龙面板、AList 等脚本工具..."
+            # 这里可以添加具体的脚本安装逻辑
+            read -p "按任意键返回菜单..."
             ;;
         3)
-            echo -e "\033[36m正在查看内存使用...\033[0m"
-            free -h
+            echo -e "${BLUE}=> 正在执行：查看运行容器${RESET}"
+            echo "正在列出所有正在运行的容器："
+            echo "----------------------------------------"
+            docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
+            echo "----------------------------------------"
+            read -p "按任意键返回菜单..."
             ;;
-        4)
-            echo -e "\033[32m退出脚本，再见！\033[0m"
+        0)
+            echo -e "${RED}退出脚本，再见！${RESET}"
             exit 0
             ;;
         *)
-            # \033[31m 是红色
-            echo -e "\033[31m错误：请输入 1-4 之间的数字！\033[0m"
+            echo -e "${RED}错误：请输入 0-3 之间的数字！${RESET}"
+            read -p "按任意键重试..."
             ;;
     esac
-    echo "" # 输出一个空行
-    read -p "按任意键返回菜单..."
 }
 
 # 主循环
 while true; do
     show_menu
-    read choice
-    handle_choice $choice
+    read CHOICE
+    handle_choice $CHOICE
 done
