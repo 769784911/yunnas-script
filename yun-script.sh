@@ -2,7 +2,7 @@
 
 # ================= 配置与颜色 =================
 PROJECT_NAME="董云 NAS 一键部署主菜单"
-CURRENT_VERSION="V1.3"
+CURRENT_VERSION="V1.4"
 PORT_PREFIX=50000
 
 # 颜色定义
@@ -13,12 +13,12 @@ BLUE='\033[34m'
 CYAN='\033[36m'
 BOLD='\033[1m'
 RESET='\033[0m'
+DARK_GREEN='\033[0;32m'
 
 # 全局变量
 BASE_DIR=""
 
 # ================= 端口转换 =================
-# 新端口 = 50000 + 原始端口
 conv_port() {
     echo $((PORT_PREFIX + $1))
 }
@@ -95,21 +95,20 @@ draw_header() {
 }
 
 draw_table_header() {
-    echo -e "${CYAN}┌────┬────────────────────┬──────────────────────────┬────────────┐${RESET}"
-    echo -e "${CYAN}│${RESET} ${BOLD}编号${RESET} ${CYAN}│${RESET} ${BOLD}项目名称           ${RESET} ${CYAN}│${RESET} ${BOLD}原始端口→新端口       ${RESET} ${CYAN}│${RESET} ${BOLD}状态${RESET} ${CYAN}│${RESET}"
-    echo -e "${CYAN}├────┼────────────────────┼──────────────────────────┼────────────┤${RESET}"
+    echo -e "${CYAN}┌────┬────────────────────┬──────────────────────────┐${RESET}"
+    echo -e "${CYAN}│${RESET} ${BOLD}编号${RESET} ${CYAN}│${RESET} ${BOLD}项目名称           ${RESET} ${CYAN}│${RESET} ${BOLD}原始端口→新端口       ${RESET} ${CYAN}│${RESET}"
+    echo -e "${CYAN}├────┼────────────────────┼──────────────────────────┤${RESET}"
 }
 
 draw_table_row() {
     local id=$(printf "%-3s" "$1")
     local name=$(printf "%-18s" "$2")
     local ports=$(printf "%-22s" "$3")
-    local status=$(printf "%s" "$4")
-    echo -e "${CYAN}│${RESET} ${id} ${CYAN}│${RESET} ${name} ${CYAN}│${RESET} ${ports} ${CYAN}│${RESET} ${status} ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET} ${id} ${CYAN}│${RESET} ${name} ${CYAN}│${RESET} ${ports} ${CYAN}│${RESET}"
 }
 
 draw_table_footer() {
-    echo -e "${CYAN}└────┴────────────────────┴──────────────────────────┴────────────┘${RESET}"
+    echo -e "${CYAN}└────┴────────────────────┴──────────────────────────┘${RESET}"
 }
 
 draw_progress() {
@@ -139,6 +138,21 @@ print_error() {
     echo ""
 }
 
+# ================= 部署信息打印 =================
+print_deploy_info() {
+    local name=$1
+    shift
+    local info=("$@")
+    echo ""
+    echo -e "${DARK_GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
+    echo -e "${DARK_GREEN}✔ ${GREEN}${name} 部署完成${RESET}"
+    for line in "${info[@]}"; do
+        echo -e "${DARK_GREEN}${line}${RESET}"
+    done
+    echo -e "${DARK_GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
+    echo ""
+}
+
 # ================= 业务逻辑 =================
 
 deploy_jellyfin() {
@@ -163,6 +177,11 @@ deploy_jellyfin() {
     sleep 2
     if sudo docker ps | grep -q jellyfin; then
         print_done "Jellyfin"
+        print_deploy_info "Jellyfin" \
+            "容器名称: ${GREEN}jellyfin${RESET}" \
+            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "默认账号: ${GREEN}admin${RESET}" \
+            "默认密码: ${GREEN}首次登录时设置${RESET}"
     else
         print_error "Jellyfin"
     fi
@@ -186,12 +205,19 @@ deploy_qbittorrent() {
         -v ${BASE_DIR}/qbittorrent/config:/config \
         -v ${BASE_DIR}/qbittorrent/downloads:/downloads \
         -e WEBUI_PORT=8080 \
+        -e PUID=1000 \
+        -e PGID=1000 \
         --restart unless-stopped \
         linuxserver/qbittorrent:latest &>/dev/null
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q qbittorrent; then
         print_done "Qbittorrent"
+        print_deploy_info "Qbittorrent" \
+            "容器名称: ${GREEN}qbittorrent${RESET}" \
+            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "默认账号: ${GREEN}admin${RESET}" \
+            "默认密码: ${GREEN}adminadmin${RESET}"
     else
         print_error "Qbittorrent"
     fi
@@ -217,6 +243,10 @@ deploy_nastools() {
     sleep 2
     if sudo docker ps | grep -q nastools; then
         print_done "NasTools"
+        print_deploy_info "NasTools" \
+            "容器名称: ${GREEN}nastools${RESET}" \
+            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "首次登录: ${GREEN}按提示注册账号${RESET}"
     else
         print_error "NasTools"
     fi
@@ -244,6 +274,10 @@ deploy_portainer() {
     sleep 2
     if sudo docker ps | grep -q portainer; then
         print_done "Portainer"
+        print_deploy_info "Portainer" \
+            "容器名称: ${GREEN}portainer${RESET}" \
+            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "首次登录: ${GREEN}创建管理员账号密码${RESET}"
     else
         print_error "Portainer"
     fi
@@ -272,6 +306,11 @@ deploy_emby() {
     sleep 2
     if sudo docker ps | grep -q emby; then
         print_done "Emby"
+        print_deploy_info "Emby" \
+            "容器名称: ${GREEN}emby${RESET}" \
+            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "默认账号: ${GREEN}admin${RESET}" \
+            "默认密码: ${GREEN}首次登录时设置${RESET}"
     else
         print_error "Emby"
     fi
@@ -297,6 +336,12 @@ deploy_alist() {
     sleep 2
     if sudo docker ps | grep -q alist; then
         print_done "Alist"
+        PASSWORD=$(sudo docker exec alist cat /opt/alist/data/alist/data/initial-password.txt 2>/dev/null | tail -1)
+        print_deploy_info "Alist" \
+            "容器名称: ${GREEN}alist${RESET}" \
+            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "默认账号: ${GREEN}admin${RESET}" \
+            "默认密码: ${GREEN}${PASSWORD}${RESET}"
     else
         print_error "Alist"
     fi
@@ -321,6 +366,10 @@ deploy_iyuu() {
     sleep 2
     if sudo docker ps | grep -q iyuu; then
         print_done "IYUU"
+        print_deploy_info "IYUU" \
+            "容器名称: ${GREEN}iyuu${RESET}" \
+            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "首次登录: ${GREEN}按提示注册账号${RESET}"
     else
         print_error "IYUU"
     fi
@@ -345,6 +394,10 @@ deploy_hugo() {
     sleep 2
     if sudo docker ps | grep -q hugo; then
         print_done "Hugo"
+        print_deploy_info "Hugo" \
+            "容器名称: ${GREEN}hugo${RESET}" \
+            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "部署目录: ${GREEN}${BASE_DIR}/hugo/site${RESET}"
     else
         print_error "Hugo"
     fi
@@ -357,14 +410,14 @@ show_app_menu() {
     echo -e "${YELLOW}请选择要部署的项目 (可多选，用空格分隔):${RESET}"
     echo ""
     draw_table_header
-    draw_table_row "1" "Jellyfin" "8096→58096  8920→58920" ""
-    draw_table_row "2" "Qbittorrent" "8080→58080  6881→56881" ""
-    draw_table_row "3" "NasTools" "3000→53000" ""
-    draw_table_row "4" "Portainer" "9000→59000  8000→58000" ""
-    draw_table_row "5" "Emby" "8096→58096  8920→58920" ""
-    draw_table_row "6" "Alist" "5244→55244" ""
-    draw_table_row "7" "IYUU" "7897→57897" ""
-    draw_table_row "8" "Hugo" "1313→51313" ""
+    draw_table_row "1" "Jellyfin" "8096→58096  8920→58920"
+    draw_table_row "2" "Qbittorrent" "8080→58080  6881→56881"
+    draw_table_row "3" "NasTools" "3000→53000"
+    draw_table_row "4" "Portainer" "9000→59000  8000→58000"
+    draw_table_row "5" "Emby" "8096→58096  8920→58920"
+    draw_table_row "6" "Alist" "5244→55244"
+    draw_table_row "7" "IYUU" "7897→57897"
+    draw_table_row "8" "Hugo" "1313→51313"
     draw_table_footer
     echo ""
     echo -e "${CYAN}提示:${RESET} 输入 ${YELLOW}1 3 5${RESET} 即可同时部署 Jellyfin, NasTools 和 Emby"
@@ -396,7 +449,7 @@ handle_selection() {
 
     echo -e "${GREEN}所有选定任务处理完毕！${RESET}"
     echo ""
-    echo -e "${YELLOW}========== 部署汇总 ==========${RESET}"
+    echo -e "${YELLOW}========== 容器状态 ==========${RESET}"
     sudo docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
     echo ""
     echo -n "按任意键返回..."
