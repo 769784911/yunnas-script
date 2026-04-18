@@ -2,8 +2,8 @@
 
 # ================= 配置与颜色 =================
 PROJECT_NAME="董云 NAS 一键部署主菜单"
-CURRENT_VERSION="V1.2"
-BASE_PORT=55681
+CURRENT_VERSION="V1.3"
+PORT_PREFIX=50000
 
 # 颜色定义
 GREEN='\033[32m'
@@ -16,7 +16,12 @@ RESET='\033[0m'
 
 # 全局变量
 BASE_DIR=""
-PORT_COUNTER=0
+
+# ================= 端口转换 =================
+# 新端口 = 50000 + 原始端口
+conv_port() {
+    echo $((PORT_PREFIX + $1))
+}
 
 # ================= 依赖检查 =================
 check_docker() {
@@ -32,12 +37,6 @@ check_docker() {
         sudo systemctl enable docker
     fi
     echo -e "${GREEN}Docker 环境检查通过${RESET}"
-}
-
-# ================= 端口分配 =================
-get_port() {
-    PORT_COUNTER=$((PORT_COUNTER + 1))
-    echo $((BASE_PORT + PORT_COUNTER - 1))
 }
 
 # ================= 目录选择 =================
@@ -78,7 +77,6 @@ select_base_dir() {
     fi
 
     echo -e "${GREEN}部署目录: ${BASE_DIR}${RESET}"
-    echo -e "${GREEN}端口起始: ${BASE_PORT}${RESET}"
     sleep 1
 }
 
@@ -97,21 +95,21 @@ draw_header() {
 }
 
 draw_table_header() {
-    echo -e "${CYAN}┌────┬────────────────────┬──────────────────────┬────────────┐${RESET}"
-    echo -e "${CYAN}│${RESET} ${BOLD}编号${RESET} ${CYAN}│${RESET} ${BOLD}项目名称           ${RESET} ${CYAN}│${RESET} ${BOLD}项目描述             ${RESET} ${CYAN}│${RESET} ${BOLD}端口${RESET} ${CYAN}│${RESET}"
-    echo -e "${CYAN}├────┼────────────────────┼──────────────────────┼────────────┤${RESET}"
+    echo -e "${CYAN}┌────┬────────────────────┬──────────────────────────┬────────────┐${RESET}"
+    echo -e "${CYAN}│${RESET} ${BOLD}编号${RESET} ${CYAN}│${RESET} ${BOLD}项目名称           ${RESET} ${CYAN}│${RESET} ${BOLD}原始端口→新端口       ${RESET} ${CYAN}│${RESET} ${BOLD}状态${RESET} ${CYAN}│${RESET}"
+    echo -e "${CYAN}├────┼────────────────────┼──────────────────────────┼────────────┤${RESET}"
 }
 
 draw_table_row() {
     local id=$(printf "%-3s" "$1")
     local name=$(printf "%-18s" "$2")
-    local desc=$(printf "%-20s" "$3")
-    local port=$(printf "%s" "$4")
-    echo -e "${CYAN}│${RESET} ${id} ${CYAN}│${RESET} ${name} ${CYAN}│${RESET} ${desc} ${CYAN}│${RESET} ${port} ${CYAN}│${RESET}"
+    local ports=$(printf "%-22s" "$3")
+    local status=$(printf "%s" "$4")
+    echo -e "${CYAN}│${RESET} ${id} ${CYAN}│${RESET} ${name} ${CYAN}│${RESET} ${ports} ${CYAN}│${RESET} ${status} ${CYAN}│${RESET}"
 }
 
 draw_table_footer() {
-    echo -e "${CYAN}└────┴────────────────────┴──────────────────────┴────────────┘${RESET}"
+    echo -e "${CYAN}└────┴────────────────────┴──────────────────────────┴────────────┘${RESET}"
 }
 
 draw_progress() {
@@ -144,19 +142,19 @@ print_error() {
 # ================= 业务逻辑 =================
 
 deploy_jellyfin() {
-    PORT1=$(get_port)
-    PORT2=$(get_port)
+    P1=$(conv_port 8096)
+    P2=$(conv_port 8920)
     echo ""
     echo -e "${BLUE}========================================${RESET}"
-    echo -e "${BOLD}正在部署: ${YELLOW}Jellyfin${RESET} 端口: ${GREEN}${PORT1} ${PORT2}${RESET}"
+    echo -e "${BOLD}正在部署: ${YELLOW}Jellyfin${RESET} 端口: ${GREEN}${P1} ${P2}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
     sudo docker pull jellyfin/jellyfin:latest &>/dev/null
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name jellyfin \
-        -p ${PORT1}:8096 \
-        -p ${PORT2}:8920 \
+        -p ${P1}:8096 \
+        -p ${P2}:8920 \
         -v ${BASE_DIR}/jellyfin/config:/config \
         -v ${BASE_DIR}/jellyfin/cache:/cache \
         --restart unless-stopped \
@@ -171,21 +169,20 @@ deploy_jellyfin() {
 }
 
 deploy_qbittorrent() {
-    PORT1=$(get_port)
-    PORT2=$(get_port)
-    PORT3=$(get_port)
+    P1=$(conv_port 8080)
+    P2=$(conv_port 6881)
     echo ""
     echo -e "${BLUE}========================================${RESET}"
-    echo -e "${BOLD}正在部署: ${YELLOW}Qbittorrent${RESET} 端口: ${GREEN}${PORT1} ${PORT2} ${PORT3}${RESET}"
+    echo -e "${BOLD}正在部署: ${YELLOW}Qbittorrent${RESET} 端口: ${GREEN}${P1} ${P2}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
     sudo docker pull linuxserver/qbittorrent:latest &>/dev/null
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name qbittorrent \
-        -p ${PORT1}:8080 \
-        -p ${PORT2}:6881 \
-        -p ${PORT3}:6881/udp \
+        -p ${P1}:8080 \
+        -p ${P2}:6881 \
+        -p ${P2}:6881/udp \
         -v ${BASE_DIR}/qbittorrent/config:/config \
         -v ${BASE_DIR}/qbittorrent/downloads:/downloads \
         -e WEBUI_PORT=8080 \
@@ -201,17 +198,17 @@ deploy_qbittorrent() {
 }
 
 deploy_nastools() {
-    PORT1=$(get_port)
+    P1=$(conv_port 3000)
     echo ""
     echo -e "${BLUE}========================================${RESET}"
-    echo -e "${BOLD}正在部署: ${YELLOW}NasTools${RESET} 端口: ${GREEN}${PORT1}${RESET}"
+    echo -e "${BOLD}正在部署: ${YELLOW}NasTools${RESET} 端口: ${GREEN}${P1}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
     sudo docker pull nastools/nastools:latest &>/dev/null
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name nastools \
-        -p ${PORT1}:3000 \
+        -p ${P1}:3000 \
         -v ${BASE_DIR}/nastools/config:/config \
         -v ${BASE_DIR}/nastools/media:/media \
         --restart unless-stopped \
@@ -226,19 +223,19 @@ deploy_nastools() {
 }
 
 deploy_portainer() {
-    PORT1=$(get_port)
-    PORT2=$(get_port)
+    P1=$(conv_port 9000)
+    P2=$(conv_port 8000)
     echo ""
     echo -e "${BLUE}========================================${RESET}"
-    echo -e "${BOLD}正在部署: ${YELLOW}Portainer${RESET} 端口: ${GREEN}${PORT1} ${PORT2}${RESET}"
+    echo -e "${BOLD}正在部署: ${YELLOW}Portainer${RESET} 端口: ${GREEN}${P1} ${P2}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
     sudo docker pull portainer/portainer-ce:latest &>/dev/null
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name portainer \
-        -p ${PORT1}:9000 \
-        -p ${PORT2}:8000 \
+        -p ${P1}:9000 \
+        -p ${P2}:8000 \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -v ${BASE_DIR}/portainer/data:/data \
         --restart unless-stopped \
@@ -253,19 +250,19 @@ deploy_portainer() {
 }
 
 deploy_emby() {
-    PORT1=$(get_port)
-    PORT2=$(get_port)
+    P1=$(conv_port 8096)
+    P2=$(conv_port 8920)
     echo ""
     echo -e "${BLUE}========================================${RESET}"
-    echo -e "${BOLD}正在部署: ${YELLOW}Emby${RESET} 端口: ${GREEN}${PORT1} ${PORT2}${RESET}"
+    echo -e "${BOLD}正在部署: ${YELLOW}Emby${RESET} 端口: ${GREEN}${P1} ${P2}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
     sudo docker pull emby/embyserver:latest &>/dev/null
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name emby \
-        -p ${PORT1}:8096 \
-        -p ${PORT2}:8920 \
+        -p ${P1}:8096 \
+        -p ${P2}:8920 \
         -v ${BASE_DIR}/emby/config:/config \
         -v ${BASE_DIR}/emby/share:/share \
         --device /dev/dri:/dev/dri \
@@ -281,17 +278,17 @@ deploy_emby() {
 }
 
 deploy_alist() {
-    PORT1=$(get_port)
+    P1=$(conv_port 5244)
     echo ""
     echo -e "${BLUE}========================================${RESET}"
-    echo -e "${BOLD}正在部署: ${YELLOW}Alist${RESET} 端口: ${GREEN}${PORT1}${RESET}"
+    echo -e "${BOLD}正在部署: ${YELLOW}Alist${RESET} 端口: ${GREEN}${P1}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
     sudo docker pull xhofe/alist:latest &>/dev/null
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name alist \
-        -p ${PORT1}:5244 \
+        -p ${P1}:5244 \
         -v ${BASE_DIR}/alist/config:/config \
         -v ${BASE_DIR}/alist:/opt/alist/data \
         --restart unless-stopped \
@@ -306,17 +303,17 @@ deploy_alist() {
 }
 
 deploy_iyuu() {
-    PORT1=$(get_port)
+    P1=$(conv_port 7897)
     echo ""
     echo -e "${BLUE}========================================${RESET}"
-    echo -e "${BOLD}正在部署: ${YELLOW}IYUU${RESET} 端口: ${GREEN}${PORT1}${RESET}"
+    echo -e "${BOLD}正在部署: ${YELLOW}IYUU${RESET} 端口: ${GREEN}${P1}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
     sudo docker pull iyuu/iyuu:latest &>/dev/null
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name iyuu \
-        -p ${PORT1}:7897 \
+        -p ${P1}:7897 \
         -v ${BASE_DIR}/iyuu/config:/config \
         --restart unless-stopped \
         iyuu/iyuu:latest &>/dev/null
@@ -330,17 +327,17 @@ deploy_iyuu() {
 }
 
 deploy_hugo() {
-    PORT1=$(get_port)
+    P1=$(conv_port 1313)
     echo ""
     echo -e "${BLUE}========================================${RESET}"
-    echo -e "${BOLD}正在部署: ${YELLOW}Hugo${RESET} 端口: ${GREEN}${PORT1}${RESET}"
+    echo -e "${BOLD}正在部署: ${YELLOW}Hugo${RESET} 端口: ${GREEN}${P1}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
     sudo docker pull klakegg/hugo:latest &>/dev/null
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name hugo \
-        -p ${PORT1}:1313 \
+        -p ${P1}:1313 \
         -v ${BASE_DIR}/hugo/site:/site \
         --restart unless-stopped \
         klakegg/hugo:latest server &>/dev/null
@@ -356,21 +353,18 @@ deploy_hugo() {
 show_app_menu() {
     draw_header
     echo -e "${YELLOW}部署目录: ${GREEN}${BASE_DIR}${RESET}"
-    echo -e "${YELLOW}端口起始: ${GREEN}${BASE_PORT} (每个应用自动递增)${RESET}"
     echo ""
     echo -e "${YELLOW}请选择要部署的项目 (可多选，用空格分隔):${RESET}"
     echo ""
-    echo -e "${CYAN}提示: 端口从 ${GREEN}${BASE_PORT}${CYAN} 开始按顺序分配${RESET}"
-    echo ""
     draw_table_header
-    draw_table_row "1" "Jellyfin" "影音媒体服务器" "${BASE_PORT} ${BASE_PORT}+1"
-    draw_table_row "2" "Qbittorrent" "BT 下载神器" "${BASE_PORT}+2 ~ +4"
-    draw_table_row "3" "NasTools" "媒体库自动化管理" "${BASE_PORT}+5"
-    draw_table_row "4" "Portainer" "Docker 可视化管理" "${BASE_PORT}+6 ~ +7"
-    draw_table_row "5" "Emby" "影音媒体服务器" "${BASE_PORT}+8 ~ +9"
-    draw_table_row "6" "Alist" "网盘文件列表程序" "${BASE_PORT}+10"
-    draw_table_row "7" "IYUU" "自动辅种工具" "${BASE_PORT}+11"
-    draw_table_row "8" "Hugo" "静态博客生成器" "${BASE_PORT}+12"
+    draw_table_row "1" "Jellyfin" "8096→58096  8920→58920" ""
+    draw_table_row "2" "Qbittorrent" "8080→58080  6881→56881" ""
+    draw_table_row "3" "NasTools" "3000→53000" ""
+    draw_table_row "4" "Portainer" "9000→59000  8000→58000" ""
+    draw_table_row "5" "Emby" "8096→58096  8920→58920" ""
+    draw_table_row "6" "Alist" "5244→55244" ""
+    draw_table_row "7" "IYUU" "7897→57897" ""
+    draw_table_row "8" "Hugo" "1313→51313" ""
     draw_table_footer
     echo ""
     echo -e "${CYAN}提示:${RESET} 输入 ${YELLOW}1 3 5${RESET} 即可同时部署 Jellyfin, NasTools 和 Emby"
@@ -414,7 +408,6 @@ check_docker
 select_base_dir
 
 while true; do
-    PORT_COUNTER=0
     show_app_menu
     handle_selection
 done
