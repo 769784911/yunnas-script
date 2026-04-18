@@ -2,7 +2,7 @@
 
 # ================= 配置与颜色 =================
 PROJECT_NAME="董云 NAS 一键部署主菜单"
-CURRENT_VERSION="V1.0"
+CURRENT_VERSION="V1.1"
 
 # 颜色定义
 GREEN='\033[32m'
@@ -14,7 +14,7 @@ BOLD='\033[1m'
 RESET='\033[0m'
 
 # 全局变量
-SELECTED_APPS=()
+BASE_DIR=""
 
 # ================= 依赖检查 =================
 check_docker() {
@@ -24,16 +24,53 @@ check_docker() {
         sudo usermod -aG docker $USER
         echo -e "${GREEN}Docker 安装完成${RESET}"
     fi
-    if ! command -v docker &> /dev/null; then
-        echo -e "${RED}Docker 安装失败，请手动安装后重试${RESET}"
-        exit 1
-    fi
     if ! sudo docker info &> /dev/null; then
         echo -e "${RED}错误: Docker 服务未运行${RESET}"
         sudo systemctl start docker
         sudo systemctl enable docker
     fi
     echo -e "${GREEN}Docker 环境检查通过${RESET}"
+}
+
+# ================= 目录选择 =================
+select_base_dir() {
+    clear
+    echo -e "${CYAN}┌──────────────────────────────────────────────────┐${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD}██╗  ██╗ █████╗ ██╗   ██╗███████╗${RESET}      ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD}██║  ██║██╔══██╗██║   ██║██╔════╝${RESET}      ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD}███████║███████║██║   ██║███████╗${RESET}      ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD}╚════██║██╔══██║╚██╗ ██╔╝╚════██║${RESET}      ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}       ${BOLD}当前版本: ${YELLOW}${CURRENT_VERSION}${RESET}                        ${CYAN}│${RESET}"
+    echo -e "${CYAN}├──────────────────────────────────────────────────┤${RESET}"
+    echo -e "${CYAN}│${RESET} ${BOLD}${PROJECT_NAME}${RESET}                           ${CYAN}│${RESET}"
+    echo -e "${CYAN}└──────────────────────────────────────────────────┘${RESET}"
+    echo ""
+    echo -e "${YELLOW}请输入要部署的根目录路径：${RESET}"
+    echo -e "${CYAN}示例: /opt/nas  或  /home/username/nas${RESET}"
+    echo ""
+    echo -n -e "${BOLD}请输入目录: ${RESET}"
+    read BASE_DIR
+
+    if [ -z "$BASE_DIR" ]; then
+        echo -e "${RED}目录不能为空！${RESET}"
+        sleep 1
+        select_base_dir
+        return
+    fi
+
+    if [ ! -d "$BASE_DIR" ]; then
+        echo -e "${YELLOW}目录不存在，正在创建...${RESET}"
+        sudo mkdir -p "$BASE_DIR"
+        if [ $? -ne 0 ]; then
+            echo -e "${RED}目录创建失败！${RESET}"
+            sleep 1
+            select_base_dir
+            return
+        fi
+    fi
+
+    echo -e "${GREEN}部署目录: ${BASE_DIR}${RESET}"
+    sleep 1
 }
 
 # ================= 界面绘制函数 =================
@@ -108,8 +145,8 @@ deploy_jellyfin() {
         --name jellyfin \
         -p 8096:8096 \
         -p 8920:8920 \
-        -v ~/jellyfin/config:/config \
-        -v ~/jellyfin/cache:/cache \
+        -v ${BASE_DIR}/jellyfin/config:/config \
+        -v ${BASE_DIR}/jellyfin/cache:/cache \
         --restart unless-stopped \
         jellyfin/jellyfin:latest &>/dev/null
     draw_progress 3 3 "正在启动服务..."
@@ -134,8 +171,8 @@ deploy_qbittorrent() {
         -p 8080:8080 \
         -p 6881:6881 \
         -p 6881:6881/udp \
-        -v ~/qbittorrent/config:/config \
-        -v ~/qbittorrent/downloads:/downloads \
+        -v ${BASE_DIR}/qbittorrent/config:/config \
+        -v ${BASE_DIR}/qbittorrent/downloads:/downloads \
         -e WEBUI_PORT=8080 \
         --restart unless-stopped \
         linuxserver/qbittorrent:latest &>/dev/null
@@ -159,8 +196,8 @@ deploy_nastools() {
     sudo docker run -d \
         --name nastools \
         -p 3000:3000 \
-        -v ~/nastools/config:/config \
-        -v ~/nastools/media:/media \
+        -v ${BASE_DIR}/nastools/config:/config \
+        -v ${BASE_DIR}/nastools/media:/media \
         --restart unless-stopped \
         nastools/nastools:latest &>/dev/null
     draw_progress 3 3 "正在启动服务..."
@@ -185,7 +222,7 @@ deploy_portainer() {
         -p 9000:9000 \
         -p 8000:8000 \
         -v /var/run/docker.sock:/var/run/docker.sock \
-        -v ~/portainer/data:/data \
+        -v ${BASE_DIR}/portainer/data:/data \
         --restart unless-stopped \
         portainer/portainer-ce:latest &>/dev/null
     draw_progress 3 3 "正在启动服务..."
@@ -209,8 +246,8 @@ deploy_emby() {
         --name emby \
         -p 8096:8096 \
         -p 8920:8920 \
-        -v ~/emby/config:/config \
-        -v ~/emby/share:/share \
+        -v ${BASE_DIR}/emby/config:/config \
+        -v ${BASE_DIR}/emby/share:/share \
         --device /dev/dri:/dev/dri \
         --restart unless-stopped \
         emby/embyserver:latest &>/dev/null
@@ -234,8 +271,8 @@ deploy_alist() {
     sudo docker run -d \
         --name alist \
         -p 5244:5244 \
-        -v ~/alist/config:/config \
-        -v ~/alist:/opt/alist/data \
+        -v ${BASE_DIR}/alist/config:/config \
+        -v ${BASE_DIR}/alist:/opt/alist/data \
         --restart unless-stopped \
         xhofe/alist:latest &>/dev/null
     draw_progress 3 3 "正在启动服务..."
@@ -258,7 +295,7 @@ deploy_iyuu() {
     sudo docker run -d \
         --name iyuu \
         -p 7897:7897 \
-        -v ~/iyuu/config:/config \
+        -v ${BASE_DIR}/iyuu/config:/config \
         --restart unless-stopped \
         iyuu/iyuu:latest &>/dev/null
     draw_progress 3 3 "正在启动服务..."
@@ -281,7 +318,7 @@ deploy_hugo() {
     sudo docker run -d \
         --name hugo \
         -p 1313:1313 \
-        -v ~/hugo/site:/site \
+        -v ${BASE_DIR}/hugo/site:/site \
         --restart unless-stopped \
         klakegg/hugo:latest server &>/dev/null
     draw_progress 3 3 "正在启动服务..."
@@ -295,6 +332,8 @@ deploy_hugo() {
 
 show_app_menu() {
     draw_header
+    echo -e "${YELLOW}部署目录: ${GREEN}${BASE_DIR}${RESET}"
+    echo ""
     echo -e "${YELLOW}请选择要部署的项目 (可多选，用空格分隔):${RESET}"
     echo ""
     draw_table_header
@@ -346,6 +385,7 @@ handle_selection() {
 
 # ================= 程序入口 =================
 check_docker
+select_base_dir
 
 while true; do
     show_app_menu
