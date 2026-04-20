@@ -354,14 +354,14 @@ deploy_iyuu() {
     echo -e "${BOLD}正在部署: ${YELLOW}IYUU${RESET} 端口: ${GREEN}${P1}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
-    sudo docker pull iyuu/iyuu:latest &>/dev/null
+    sudo docker pull iyuucn/iyuuplus:latest &>/dev/null
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name iyuu \
         -p ${P1}:7897 \
         -v ${BASE_DIR}/iyuu/config:/config \
         --restart unless-stopped \
-        iyuu/iyuu:latest &>/dev/null
+        iyuucn/iyuuplus:latest &>/dev/null
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q iyuu; then
