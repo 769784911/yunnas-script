@@ -114,7 +114,8 @@ draw_table_row() {
     local name=$2
     local container_name=$3
     local status=$(check_container "$container_name")
-    printf "${CYAN}│${RESET} [${status}] ${CYAN}│${RESET} ${BOLD}%-27s${RESET} ${CYAN}│${RESET}\n" "$name"
+    printf "${CYAN}│${RESET} [${status}] ${CYAN}│${RESET} ${BOLD}%-27s${RESET} ${CYAN}│${RESET}
+" "$id $name"
 }
 
 draw_table_footer() {
