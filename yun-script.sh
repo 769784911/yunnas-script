@@ -2,7 +2,7 @@
 
 # ================= 配置与颜色 =================
 PROJECT_NAME="董云 NAS 一键部署主菜单"
-CURRENT_VERSION="V1.4"
+CURRENT_VERSION="V1.5"
 PORT_PREFIX=40000
 
 # 颜色定义
@@ -403,6 +403,51 @@ deploy_hugo() {
     fi
 }
 
+deploy_clash() {
+    P1=$(conv_port 7890)
+    P2=$(conv_port 7891)
+    P3=$(conv_port 9090)
+    echo ""
+    echo -e "${BLUE}========================================${RESET}"
+    echo -e "${BOLD}正在部署: ${YELLOW}Clash${RESET} 端口: ${GREEN}${P1} ${P2} ${P3}${RESET}"
+    echo -e "${BLUE}========================================${RESET}"
+    draw_progress 1 4 "正在创建配置目录..."
+    sudo mkdir -p ${BASE_DIR}/clash/config
+    sudo mkdir -p ${BASE_DIR}/clash/ui
+    draw_progress 2 4 "正在创建 docker-compose.yml..."
+    cat > ${BASE_DIR}/clash/docker-compose.yml << 'EOF'
+services:
+  clash:
+    image: dreamacro/clash-premium:latest
+    container_name: clash
+    restart: unless-stopped
+    ports:
+      - "${P1}:7890"
+      - "${P2}:7891"
+      - "${P3}:9090"
+    volumes:
+      - ./config:/root/.config/clash
+    environment:
+      - CLASH_EXTERNAL_CONTROLLER=true
+EOF
+    draw_progress 3 4 "正在拉取镜像..."
+    cd ${BASE_DIR}/clash && sudo docker compose pull &>/dev/null
+    draw_progress 4 4 "正在启动容器..."
+    sudo docker compose up -d &>/dev/null
+    sleep 3
+    if sudo docker ps | grep -q clash; then
+        print_done "Clash"
+        print_deploy_info "Clash" \
+            "容器名称: ${GREEN}clash${RESET}" \
+            "HTTP代理: ${GREEN}http://$(curl -s ifconfig.me):${P1}${RESET}" \
+            "SOCKS5: ${GREEN}$(curl -s ifconfig.me):${P2}${RESET}" \
+            "Dashboard: ${GREEN}http://$(curl -s ifconfig.me):${P3}/ui${RESET}" \
+            "配置文件: ${GREEN}${BASE_DIR}/clash/config/config.yml${RESET}"
+    else
+        print_error "Clash"
+    fi
+}
+
 show_app_menu() {
     draw_header
     echo -e "${YELLOW}部署目录: ${GREEN}${BASE_DIR}${RESET}"
@@ -418,6 +463,7 @@ show_app_menu() {
     draw_table_row "6" "Alist" "5244→45244"
     draw_table_row "7" "IYUU" "7897→47897"
     draw_table_row "8" "Hugo" "1313→41313"
+    draw_table_row "9" "Clash" "7890→47890  7891→47891  9090→49090"
     draw_table_footer
     echo ""
     echo -e "${CYAN}提示:${RESET} 输入 ${YELLOW}1 3 5${RESET} 即可同时部署 Jellyfin, NasTools 和 Emby，输入 ${YELLOW}b${RESET} 退出脚本"
@@ -444,6 +490,7 @@ handle_selection() {
             6) deploy_alist ;;
             7) deploy_iyuu ;;
             8) deploy_hugo ;;
+            9) deploy_clash ;;
             *) echo -e "${RED}警告: 无效编号 '$choice' 已跳过${RESET}" ;;
         esac
     done
