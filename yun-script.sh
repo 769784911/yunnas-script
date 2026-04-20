@@ -103,9 +103,9 @@ draw_table_header() {
 check_container() {
     local name=$1
     if sudo docker ps --format "{{.Names}}" 2>/dev/null | grep -q "^${name}$"; then
-        echo "✓"
+        echo "Y"
     else
-        echo "x"
+        echo "N"
     fi
 }
 
