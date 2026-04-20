@@ -195,7 +195,7 @@ deploy_jellyfin() {
         print_done "Jellyfin"
         print_deploy_info "Jellyfin" \
             "容器名称: ${GREEN}jellyfin${RESET}" \
-            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "访问地址: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P1}${RESET}" \
             "默认账号: ${GREEN}admin${RESET}" \
             "默认密码: ${GREEN}首次登录时设置${RESET}"
     else
@@ -231,7 +231,7 @@ deploy_qbittorrent() {
         print_done "Qbittorrent"
         print_deploy_info "Qbittorrent" \
             "容器名称: ${GREEN}qbittorrent${RESET}" \
-            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "访问地址: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P1}${RESET}" \
             "默认账号: ${GREEN}admin${RESET}" \
             "默认密码: ${GREEN}adminadmin${RESET}"
     else
@@ -261,7 +261,7 @@ deploy_nastools() {
         print_done "NasTools"
         print_deploy_info "NasTools" \
             "容器名称: ${GREEN}nastools${RESET}" \
-            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "访问地址: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P1}${RESET}" \
             "首次登录: ${GREEN}按提示注册账号${RESET}"
     else
         print_error "NasTools"
@@ -292,7 +292,7 @@ deploy_portainer() {
         print_done "Portainer"
         print_deploy_info "Portainer" \
             "容器名称: ${GREEN}portainer${RESET}" \
-            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "访问地址: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P1}${RESET}" \
             "首次登录: ${GREEN}创建管理员账号密码${RESET}"
     else
         print_error "Portainer"
@@ -324,7 +324,7 @@ deploy_emby() {
         print_done "Emby"
         print_deploy_info "Emby" \
             "容器名称: ${GREEN}emby${RESET}" \
-            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "访问地址: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P1}${RESET}" \
             "默认账号: ${GREEN}admin${RESET}" \
             "默认密码: ${GREEN}首次登录时设置${RESET}"
     else
@@ -355,7 +355,7 @@ deploy_alist() {
         PASSWORD=$(sudo docker exec alist cat /opt/alist/data/alist/data/initial-password.txt 2>/dev/null | tail -1)
         print_deploy_info "Alist" \
             "容器名称: ${GREEN}alist${RESET}" \
-            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "访问地址: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P1}${RESET}" \
             "默认账号: ${GREEN}admin${RESET}" \
             "默认密码: ${GREEN}${PASSWORD}${RESET}"
     else
@@ -384,7 +384,7 @@ deploy_iyuu() {
         print_done "IYUU"
         print_deploy_info "IYUU" \
             "容器名称: ${GREEN}iyuu${RESET}" \
-            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "访问地址: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P1}${RESET}" \
             "首次登录: ${GREEN}按提示注册账号${RESET}"
     else
         print_error "IYUU"
@@ -412,7 +412,7 @@ deploy_hugo() {
         print_done "Hugo"
         print_deploy_info "Hugo" \
             "容器名称: ${GREEN}hugo${RESET}" \
-            "访问地址: ${GREEN}http://\$(curl -s ifconfig.me):${P1}${RESET}" \
+            "访问地址: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P1}${RESET}" \
             "部署目录: ${GREEN}${BASE_DIR}/hugo/site${RESET}"
     else
         print_error "Hugo"
