@@ -95,9 +95,9 @@ draw_header() {
 }
 
 draw_table_header() {
-    echo -e "${CYAN}┌────────┬──────────────────────────────┐${RESET}"
-    echo -e "${CYAN}│${RESET} ${BOLD}  编号  ${RESET} ${CYAN}│${RESET} ${BOLD}项目名称                 ${RESET} ${CYAN}│${RESET}"
-    echo -e "${CYAN}├────────┼──────────────────────────────┤${RESET}"
+    echo -e "${CYAN}┌──────────┬────────────────────────────┐${RESET}"
+    echo -e "${CYAN}│${RESET} ${BOLD}   状态   ${RESET} ${CYAN}│${RESET} ${BOLD}项目名称                  ${RESET} ${CYAN}│${RESET}"
+    echo -e "${CYAN}├──────────┼────────────────────────────┤${RESET}"
 }
 
 check_container() {
@@ -114,12 +114,12 @@ draw_table_row() {
     local name=$2
     local container_name=$3
     local status=$(check_container "$container_name")
-    printf "${CYAN}│${RESET} [${status}] ${CYAN}│${RESET} ${BOLD}%-27s${RESET} ${CYAN}│${RESET}
-" "$(printf '%-2s' "$id") $name"
+    printf "${CYAN}│${RESET} [${status}$(printf '%-2d' "$id")] ${CYAN}│${RESET} ${BOLD}%-26s${RESET} ${CYAN}│${RESET}
+" "$name"
 }
 
 draw_table_footer() {
-    echo -e "${CYAN}└────────┴──────────────────────────────┘${RESET}"
+    echo -e "${CYAN}└──────────┴────────────────────────────┘${RESET}"
 }
 
 draw_progress() {
