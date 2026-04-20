@@ -179,7 +179,7 @@ deploy_jellyfin() {
     echo -e "${BOLD}正在部署: ${YELLOW}Jellyfin${RESET} 端口: ${GREEN}${P1} ${P2}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
-    sudo docker pull jellyfin/jellyfin:latest &>/dev/null
+    sudo docker pull jellyfin/jellyfin:latest 
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name jellyfin \
@@ -188,7 +188,7 @@ deploy_jellyfin() {
         -v ${BASE_DIR}/jellyfin/config:/config \
         -v ${BASE_DIR}/jellyfin/cache:/cache \
         --restart unless-stopped \
-        jellyfin/jellyfin:latest &>/dev/null
+        jellyfin/jellyfin:latest 
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q jellyfin; then
@@ -211,7 +211,7 @@ deploy_qbittorrent() {
     echo -e "${BOLD}正在部署: ${YELLOW}Qbittorrent${RESET} 端口: ${GREEN}${P1} ${P2}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
-    sudo docker pull linuxserver/qbittorrent:latest &>/dev/null
+    sudo docker pull linuxserver/qbittorrent:latest 
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name qbittorrent \
@@ -224,7 +224,7 @@ deploy_qbittorrent() {
         -e PUID=1000 \
         -e PGID=1000 \
         --restart unless-stopped \
-        linuxserver/qbittorrent:latest &>/dev/null
+        linuxserver/qbittorrent:latest 
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q qbittorrent; then
@@ -246,7 +246,7 @@ deploy_nastools() {
     echo -e "${BOLD}正在部署: ${YELLOW}NasTools${RESET} 端口: ${GREEN}${P1}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
-    sudo docker pull nastools/nastools:latest &>/dev/null
+    sudo docker pull nastools/nastools:latest 
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name nastools \
@@ -254,7 +254,7 @@ deploy_nastools() {
         -v ${BASE_DIR}/nastools/config:/config \
         -v ${BASE_DIR}/nastools/media:/media \
         --restart unless-stopped \
-        nastools/nastools:latest &>/dev/null
+        nastools/nastools:latest 
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q nastools; then
@@ -276,7 +276,7 @@ deploy_portainer() {
     echo -e "${BOLD}正在部署: ${YELLOW}Portainer${RESET} 端口: ${GREEN}${P1} ${P2}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
-    sudo docker pull portainer/portainer-ce:latest &>/dev/null
+    sudo docker pull portainer/portainer-ce:latest 
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name portainer \
@@ -285,7 +285,7 @@ deploy_portainer() {
         -v /var/run/docker.sock:/var/run/docker.sock \
         -v ${BASE_DIR}/portainer/data:/data \
         --restart unless-stopped \
-        portainer/portainer-ce:latest &>/dev/null
+        portainer/portainer-ce:latest 
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q portainer; then
@@ -307,7 +307,7 @@ deploy_emby() {
     echo -e "${BOLD}正在部署: ${YELLOW}Emby${RESET} 端口: ${GREEN}${P1} ${P2}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
-    sudo docker pull emby/embyserver:latest &>/dev/null
+    sudo docker pull emby/embyserver:latest 
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name emby \
@@ -317,7 +317,7 @@ deploy_emby() {
         -v ${BASE_DIR}/emby/share:/share \
         --device /dev/dri:/dev/dri \
         --restart unless-stopped \
-        emby/embyserver:latest &>/dev/null
+        emby/embyserver:latest 
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q emby; then
@@ -339,7 +339,7 @@ deploy_alist() {
     echo -e "${BOLD}正在部署: ${YELLOW}Alist${RESET} 端口: ${GREEN}${P1}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
-    sudo docker pull xhofe/alist:latest &>/dev/null
+    sudo docker pull xhofe/alist:latest 
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name alist \
@@ -347,7 +347,7 @@ deploy_alist() {
         -v ${BASE_DIR}/alist/config:/config \
         -v ${BASE_DIR}/alist:/opt/alist/data \
         --restart unless-stopped \
-        xhofe/alist:latest &>/dev/null
+        xhofe/alist:latest 
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q alist; then
@@ -370,14 +370,14 @@ deploy_iyuu() {
     echo -e "${BOLD}正在部署: ${YELLOW}IYUU${RESET} 端口: ${GREEN}${P1}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
-    sudo docker pull iyuucn/iyuuplus:latest &>/dev/null
+    sudo docker pull iyuucn/iyuuplus:latest 
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name iyuu \
         -p ${P1}:7897 \
         -v ${BASE_DIR}/iyuu/config:/config \
         --restart unless-stopped \
-        iyuucn/iyuuplus:latest &>/dev/null
+        iyuucn/iyuuplus:latest 
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q iyuu; then
@@ -398,14 +398,14 @@ deploy_hugo() {
     echo -e "${BOLD}正在部署: ${YELLOW}Hugo${RESET} 端口: ${GREEN}${P1}${RESET}"
     echo -e "${BLUE}========================================${RESET}"
     draw_progress 1 3 "正在拉取镜像..."
-    sudo docker pull klakegg/hugo:latest &>/dev/null
+    sudo docker pull klakegg/hugo:latest 
     draw_progress 2 3 "正在创建容器..."
     sudo docker run -d \
         --name hugo \
         -p ${P1}:1313 \
         -v ${BASE_DIR}/hugo/site:/site \
         --restart unless-stopped \
-        klakegg/hugo:latest server &>/dev/null
+        klakegg/hugo:latest server 
     draw_progress 3 3 "正在启动服务..."
     sleep 2
     if sudo docker ps | grep -q hugo; then
@@ -447,9 +447,9 @@ services:
       - CLASH_EXTERNAL_CONTROLLER=true
 EOF
     draw_progress 3 4 "正在拉取镜像..."
-    cd ${BASE_DIR}/clash && sudo docker compose pull &>/dev/null
+    cd ${BASE_DIR}/clash && sudo docker compose pull 
     draw_progress 4 4 "正在启动容器..."
-    sudo docker compose up -d &>/dev/null
+    sudo docker compose up -d
     sleep 3
     if sudo docker ps | grep -q clash; then
         print_done "Clash"
