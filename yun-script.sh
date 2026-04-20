@@ -43,11 +43,11 @@ check_docker() {
 select_base_dir() {
     clear
     echo -e "${CYAN}┌──────────────────────────────────────────────────┐${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD} █▀▄▄▄█ █ ▄▄▄▄▄ █▀▀▀▀▀${RESET}        ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD} █ █   █ █ █   █ █▄▄▄▄▄${RESET}        ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD} █ █▄▄▀ █ █   █ █       ${RESET}        ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD} ▀▀▀▀▀▀ ▀ ▀▀▀▀▀▀ ▀▀▀▀▀▀${RESET}        ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}       ${BOLD}当前版本: ${YELLOW}${CURRENT_VERSION}${RESET}                        ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █▀▄▄▄█ █ ▄▄▄▄▄ █▀▀▀▀▀${RESET}                                                 ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █ █   █ █ █   █ █▄▄▄▄▄${RESET}                                                ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █ █▄▄▀ █ █   █ █       ${RESET}                                               ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} ▀▀▀▀▀▀ ▀ ▀▀▀▀▀▀ ▀▀▀▀▀▀${RESET}                                                ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}       ${BOLD}当前版本: ${YELLOW}${CURRENT_VERSION}${RESET}                              ${CYAN}│${RESET}"
     echo -e "${CYAN}├──────────────────────────────────────────────────┤${RESET}"
     echo -e "${CYAN}│${RESET} ${BOLD}${PROJECT_NAME}${RESET}                           ${CYAN}│${RESET}"
     echo -e "${CYAN}└──────────────────────────────────────────────────┘${RESET}"
@@ -84,11 +84,11 @@ select_base_dir() {
 draw_header() {
     clear
     echo -e "${CYAN}┌──────────────────────────────────────────────────┐${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD} █▀▄▄▄█ █ ▄▄▄▄▄ █▀▀▀▀▀                        ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD} █ █   █ █ █   █ █▄▄▄▄▄                        ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD} █ █▄▄▀ █ █   █ █                               ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD} ▀▀▀▀▀▀ ▀ ▀▀▀▀▀▀ ▀▀▀▀▀▀                        ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}       ${BOLD}当前版本: ${YELLOW}${CURRENT_VERSION}${RESET}                               ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █▀▄▄▄█ █ ▄▄▄▄▄ █▀▀▀▀▀                                      ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █ █   █ █ █   █ █▄▄▄▄▄                                       ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █ █▄▄▀ █ █   █ █                                        ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} ▀▀▀▀▀▀ ▀ ▀▀▀▀▀▀ ▀▀▀▀▀▀                                  ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}       ${BOLD}当前版本: ${YELLOW}${CURRENT_VERSION}${RESET}              ${CYAN}│${RESET}"
     echo -e "${CYAN}├──────────────────────────────────────────────────┤${RESET}"
     echo -e "${CYAN}│${RESET} ${BOLD}${PROJECT_NAME}${RESET}                                          ${CYAN}│${RESET}"
     echo -e "${CYAN}└──────────────────────────────────────────────────┘${RESET}"
