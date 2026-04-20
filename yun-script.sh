@@ -450,9 +450,6 @@ handle_selection() {
 
     echo -e "${GREEN}所有选定任务处理完毕！${RESET}"
     echo ""
-    echo -e "${YELLOW}========== 容器状态 ==========${RESET}"
-    sudo docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
-    echo ""
     echo -n "按任意键返回..."
     read -n1 -s
 }
