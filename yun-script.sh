@@ -2394,73 +2394,44 @@ show_app_menu() {
     echo ""
     echo -e "${YELLOW}请选择要部署的项目 (可多选，用空格分隔):${RESET}"
     echo ""
-    draw_table_header
-    draw_table_row "1" "Jellyfin" jellyfin
-    draw_table_row "2" "Qbittorrent" qbittorrent
-    draw_table_row "3" "NasTools" nastools
-    draw_table_row "4" "Portainer" portainer
-    draw_table_row "5" "Emby" emby
-    draw_table_row "6" "Alist" alist
-    draw_table_row "7" "IYUU" iyuu
-    draw_table_row "8" "Hugo" hugo
-    draw_table_row "9" "Clash" clash
-    draw_table_row "10" "moviepilot" moviepilot
-    draw_table_row "11" "iptv" iptv
-    draw_table_row "12" "homepage" homepage
-    draw_table_row "13" "homeassistant" homeassistant
-    draw_table_row "14" "navidrome" navidrome
-    draw_table_row "15" "moontv" moontv
-    draw_table_row "16" "libretv" libretv
-    draw_table_row "17" "emby" emby
-    draw_table_row "18" "jellyfin" jellyfin
-    draw_table_row "19" "qbittorrent" qbittorrent
-    draw_table_row "20" "transmission" transmission
-    draw_table_row "21" "synctv" synctv
-    draw_table_row "22" "openlist" openlist
-    draw_table_row "23" "pansou" pansou
-    draw_table_row "24" "komga" komga
-    draw_table_row "25" "weizhi" weizhi
-    draw_table_row "26" "ddnsgo" ddnsgo
-    draw_table_row "27" "panel" panel
-    draw_table_row "28" "drawio" drawio
-    draw_table_row "29" "qinglong" qinglong
-    draw_table_row "30" "sonarr" sonarr
-    draw_table_row "31" "newsnow" newsnow
-    draw_table_row "32" "prowlarr" prowlarr
-    draw_table_row "33" "radarr" radarr
-    draw_table_row "34" "suwayomi" suwayomi
-    draw_table_row "35" "reader" reader
-    draw_table_row "36" "solara" solara
-    draw_table_row "37" "hongjing" hongjing
-    draw_table_row "38" "rustpad" rustpad
-    draw_table_row "39" "contra" contra
-    draw_table_row "40" "feiji" feiji
-    draw_table_row "41" "katelyatv" katelyatv
-    draw_table_row "42" "playlistdl" playlistdl
-    draw_table_row "43" "anime" anime
-    draw_table_row "44" "omnibox" omnibox
-    draw_table_row "45" "smartstrm" smartstrm
-    draw_table_row "46" "convertx" convertx
-    draw_table_row "47" "paintboard" paintboard
-    draw_table_row "48" "icons" icons
-    draw_table_row "49" "minipaint" minipaint
-    draw_table_row "50" "panhub" panhub
-    draw_table_row "51" "audiobooks" audiobooks
-    draw_table_row "52" "xiaoaimusic" xiaoaimusic
-    draw_table_row "53" "cloudsaver" cloudsaver
-    draw_table_row "54" "ipttv" ipttv
-    draw_table_row "55" "zfile" zfile
-    draw_table_row "56" "halo" halo
-    draw_table_row "57" "ezbookkeeping" ezbookkeeping
-    draw_table_row "58" "simplemindmap" simplemindmap
-    draw_table_row "59" "hivision" hivision
-    draw_table_row "60" "homarr" homarr
-    draw_table_row "61" "talebook" talebook
-    draw_table_row "62" "memos" memos
-    draw_table_row "63" "bentopdf" bentopdf
-    draw_table_row "64" "nextcloud" nextcloud    draw_table_footer
+    echo -e "${CYAN}┌─────────────────────────────────────────────────────────────────────┐${RESET}"
+    echo -e "${CYAN}│${RESET} ${BOLD} 编号   项目名称                        编号   项目名称             ${RESET} ${CYAN}│${RESET}"
+    echo -e "${CYAN}├─────────────────────────────────────────────────────────────────────┤${RESET}"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "1" "Jellyfin" "33" "radarr"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "2" "Qbittorrent" "34" "suwayomi"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "3" "NasTools" "35" "reader"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "4" "Portainer" "36" "solara"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "5" "Emby" "37" "hongjing"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "6" "Alist" "38" "rustpad"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "7" "IYUU" "39" "contra"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "8" "Hugo" "40" "feiji"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "9" "Clash" "41" "katelyatv"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "10" "moviepilot" "42" "playlistdl"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "11" "iptv" "43" "anime"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "12" "homepage" "44" "omnibox"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "13" "homeassistant" "45" "smartstrm"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "14" "navidrome" "46" "convertx"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "15" "moontv" "47" "paintboard"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "16" "libretv" "48" "icons"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "17" "emby" "49" "minipaint"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "18" "jellyfin" "50" "panhub"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "19" "qbittorrent" "51" "audiobooks"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "20" "transmission" "52" "xiaoaimusic"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "21" "synctv" "53" "cloudsaver"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "22" "openlist" "54" "ipttv"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "23" "pansou" "55" "zfile"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "24" "komga" "56" "halo"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "25" "weizhi" "57" "ezbookkeeping"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "26" "ddnsgo" "58" "simplemindmap"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [ N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "27" "panel" "59" "hivision"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "28" "drawio" "60" "homarr"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "29" "qinglong" "61" "talebook"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "30" "sonarr" "62" "memos"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "31" "newsnow" "63" "bentopdf"
+    printf "${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET} [N] ${BOLD}%-3s${RESET} ${GREEN}%-24s${RESET} ${CYAN}│${RESET}\n" "32" "prowlarr" "64" "nextcloud"
+    echo -e "${CYAN}└─────────────────────────────────────────────────────────────────────┘${RESET}"
     echo ""
-    echo -e "${CYAN}提示:${RESET} 输入 ${YELLOW}1 3 5${RESET} 即可同时部署 Jellyfin, NasTools 和 Emby，输入 ${YELLOW}b${RESET} 退出脚本"
+    echo -e "${CYAN}提示:${RESET} 输入 ${YELLOW}1 3 5${RESET} 即可同时部署，输入 ${YELLOW}b${RESET} 退出脚本"
     echo -n -e "${BOLD}请输入编号: ${RESET}"
 }
 
