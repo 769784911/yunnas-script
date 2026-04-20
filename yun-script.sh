@@ -2,7 +2,7 @@
 
 # ================= 配置与颜色 =================
 PROJECT_NAME="董云 NAS 一键部署主菜单"
-CURRENT_VERSION="V2.2"
+CURRENT_VERSION="V2.3"
 PORT_PREFIX=40000
 
 # 颜色定义
@@ -43,10 +43,10 @@ check_docker() {
 select_base_dir() {
     clear
     echo -e "${CYAN}┌──────────────────────────────────────────────────┐${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD}██╗  ██╗ █████╗ ██╗   ██╗███████╗${RESET}      ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD}██║  ██║██╔══██╗██║   ██║██╔════╝${RESET}      ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD}███████║███████║██║   ██║███████╗${RESET}      ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD}╚════██║██╔══██║╚██╗ ██╔╝╚════██║${RESET}      ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █▀▄▄▄█ █ ▄▄▄▄▄ █▀▀▀▀▀${RESET}        ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █ █   █ █ █   █ █▄▄▄▄▄${RESET}        ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █ █▄▄▀ █ █   █ █       ${RESET}        ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} ▀▀▀▀▀▀ ▀ ▀▀▀▀▀▀ ▀▀▀▀▀▀${RESET}        ${CYAN}│${RESET}"
     echo -e "${CYAN}│${RESET}       ${BOLD}当前版本: ${YELLOW}${CURRENT_VERSION}${RESET}                        ${CYAN}│${RESET}"
     echo -e "${CYAN}├──────────────────────────────────────────────────┤${RESET}"
     echo -e "${CYAN}│${RESET} ${BOLD}${PROJECT_NAME}${RESET}                           ${CYAN}│${RESET}"
@@ -84,10 +84,10 @@ select_base_dir() {
 draw_header() {
     clear
     echo -e "${CYAN}┌──────────────────────────────────────────────────┐${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD}██╗  ██╗ █████╗ ██╗   ██╗███████╗${RESET}      ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD}██║  ██║██╔══██╗██║   ██║██╔════╝${RESET}      ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD}███████║███████║██║   ██║███████╗${RESET}      ${CYAN}│${RESET}"
-    echo -e "${CYAN}│${RESET}  ${BOLD}╚════██║██╔══██║╚██╗ ██╔╝╚════██║${RESET}      ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █▀▄▄▄█ █ ▄▄▄▄▄ █▀▀▀▀▀${RESET}        ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █ █   █ █ █   █ █▄▄▄▄▄${RESET}        ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} █ █▄▄▀ █ █   █ █      ${RESET}        ${CYAN}│${RESET}"
+    echo -e "${CYAN}│${RESET}  ${BOLD} ▀▀▀▀▀▀ ▀ ▀▀▀▀▀▀ ▀▀▀▀▀▀${RESET}        ${CYAN}│${RESET}"
     echo -e "${CYAN}│${RESET}       ${BOLD}当前版本: ${YELLOW}${CURRENT_VERSION}${RESET}                        ${CYAN}│${RESET}"
     echo -e "${CYAN}├──────────────────────────────────────────────────┤${RESET}"
     echo -e "${CYAN}│${RESET} ${BOLD}${PROJECT_NAME}${RESET}                           ${CYAN}│${RESET}"
