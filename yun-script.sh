@@ -439,9 +439,9 @@ EOF
         print_done "Clash"
         print_deploy_info "Clash" \
             "容器名称: ${GREEN}clash${RESET}" \
-            "HTTP代理: ${GREEN}http://$(curl -s ifconfig.me):${P1}${RESET}" \
-            "SOCKS5: ${GREEN}$(curl -s ifconfig.me):${P2}${RESET}" \
-            "Dashboard: ${GREEN}http://$(curl -s ifconfig.me):${P3}/ui${RESET}" \
+            "HTTP代理: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P1}${RESET}" \
+            "SOCKS5: ${GREEN}$(hostname -I | awk '{print $1}'):${P2}${RESET}" \
+            "Dashboard: ${GREEN}http://$(hostname -I | awk '{print $1}'):${P3}/ui${RESET}" \
             "配置文件: ${GREEN}${BASE_DIR}/clash/config/config.yml${RESET}"
     else
         print_error "Clash"
