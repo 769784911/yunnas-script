@@ -2,7 +2,7 @@
 
 # ================= 配置与颜色 =================
 PROJECT_NAME="董云 NAS 一键部署主菜单"
-CURRENT_VERSION="V1.5"
+CURRENT_VERSION="V2.2"
 PORT_PREFIX=40000
 
 # 颜色定义
@@ -95,20 +95,30 @@ draw_header() {
 }
 
 draw_table_header() {
-    echo -e "${CYAN}┌────┬────────────────────┬──────────────────────────┐${RESET}"
-    echo -e "${CYAN}│${RESET} ${BOLD}编号${RESET} ${CYAN}│${RESET} ${BOLD}项目名称           ${RESET} ${CYAN}│${RESET} ${BOLD}原始端口→新端口       ${RESET} ${CYAN}│${RESET}"
-    echo -e "${CYAN}├────┼────────────────────┼──────────────────────────┤${RESET}"
+    echo -e "${CYAN}┌────────┬──────────────────────────────┐${RESET}"
+    echo -e "${CYAN}│${RESET} ${BOLD}  编号  ${RESET} ${CYAN}│${RESET} ${BOLD}项目名称                 ${RESET} ${CYAN}│${RESET}"
+    echo -e "${CYAN}├────────┼──────────────────────────────┤${RESET}"
+}
+
+check_container() {
+    local name=$1
+    if sudo docker ps --format "{{.Names}}" 2>/dev/null | grep -q "^${name}$"; then
+        echo "✓"
+    else
+        echo "x"
+    fi
 }
 
 draw_table_row() {
-    local id=$(printf "%-3s" "$1")
-    local name=$(printf "%-18s" "$2")
-    local ports=$(printf "%-22s" "$3")
-    echo -e "${CYAN}│${RESET} ${id} ${CYAN}│${RESET} ${name} ${CYAN}│${RESET} ${ports} ${CYAN}│${RESET}"
+    local id=$1
+    local name=$2
+    local container_name=$3
+    local status=$(check_container "$container_name")
+    printf "${CYAN}│${RESET} [${status}] ${CYAN}│${RESET} ${BOLD}%-27s${RESET} ${CYAN}│${RESET}\n" "$name"
 }
 
 draw_table_footer() {
-    echo -e "${CYAN}└────┴────────────────────┴──────────────────────────┘${RESET}"
+    echo -e "${CYAN}└────────┴──────────────────────────────┘${RESET}"
 }
 
 draw_progress() {
@@ -455,15 +465,15 @@ show_app_menu() {
     echo -e "${YELLOW}请选择要部署的项目 (可多选，用空格分隔):${RESET}"
     echo ""
     draw_table_header
-    draw_table_row "1" "Jellyfin" "8096→48096  8920→48920"
-    draw_table_row "2" "Qbittorrent" "8080→48080  6881→46881"
-    draw_table_row "3" "NasTools" "3000→43000"
-    draw_table_row "4" "Portainer" "9000→49000  8000→48000"
-    draw_table_row "5" "Emby" "8096→48096  8920→48920"
-    draw_table_row "6" "Alist" "5244→45244"
-    draw_table_row "7" "IYUU" "7897→47897"
-    draw_table_row "8" "Hugo" "1313→41313"
-    draw_table_row "9" "Clash" "7890→47890  7891→47891  9090→49090"
+    draw_table_row "1" "Jellyfin" jellyfin
+    draw_table_row "2" "Qbittorrent" qbittorrent
+    draw_table_row "3" "NasTools" nastools
+    draw_table_row "4" "Portainer" portainer
+    draw_table_row "5" "Emby" emby
+    draw_table_row "6" "Alist" alist
+    draw_table_row "7" "IYUU" iyuu
+    draw_table_row "8" "Hugo" hugo
+    draw_table_row "9" "Clash" clash
     draw_table_footer
     echo ""
     echo -e "${CYAN}提示:${RESET} 输入 ${YELLOW}1 3 5${RESET} 即可同时部署 Jellyfin, NasTools 和 Emby，输入 ${YELLOW}b${RESET} 退出脚本"
