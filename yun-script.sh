@@ -420,7 +420,7 @@ show_app_menu() {
     draw_table_row "8" "Hugo" "1313→41313"
     draw_table_footer
     echo ""
-    echo -e "${CYAN}提示:${RESET} 输入 ${YELLOW}1 3 5${RESET} 即可同时部署 Jellyfin, NasTools 和 Emby"
+    echo -e "${CYAN}提示:${RESET} 输入 ${YELLOW}1 3 5${RESET} 即可同时部署 Jellyfin, NasTools 和 Emby，输入 ${YELLOW}b${RESET} 退出脚本"
     echo -n -e "${BOLD}请输入编号: ${RESET}"
 }
 
@@ -435,6 +435,7 @@ handle_selection() {
 
     for choice in "${choices[@]}"; do
         case $choice in
+            b|B) echo -e "${YELLOW}退出脚本，再见！${RESET}"; exit 0 ;;
             1) deploy_jellyfin ;;
             2) deploy_qbittorrent ;;
             3) deploy_nastools ;;
