@@ -3,7 +3,7 @@
 # ================= 配置与颜色 =================
 PROJECT_NAME="董云 NAS 一键部署主菜单"
 CURRENT_VERSION="V1.4"
-PORT_PREFIX=50000
+PORT_PREFIX=40000
 
 # 颜色定义
 GREEN='\033[32m'
