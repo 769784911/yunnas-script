@@ -204,6 +204,7 @@ show_proxy_menu() {
     echo ""
     echo -e "${GREEN}1${RESET}. 配置代理服务"
     echo -e "${YELLOW}2${RESET}. 回车跳过代理"
+    echo -e "${RED}3${RESET}. 清除代理配置"
     echo ""
     echo -n -e "${BOLD}请输入选项: ${RESET}"
 }
@@ -221,6 +222,9 @@ handle_proxy_menu() {
             sleep 1
             show_main_menu
             handle_main_menu
+            ;;
+        3)
+            clear_proxy
             ;;
         *)
             echo -e "${RED}无效选项${RESET}"
@@ -284,6 +288,22 @@ configure_proxy() {
     handle_main_menu
 }
 
+clear_proxy() {
+    echo ""
+    echo -e "${YELLOW}正在清除代理配置...${RESET}"
+    # 移除bashrc中的代理配置
+    sed -i '/export HTTP_PROXY=/d' ~/.bashrc 2>/dev/null
+    sed -i '/export HTTPS_PROXY=/d' ~/.bashrc 2>/dev/null
+    # 清除当前环境变量
+    unset HTTP_PROXY
+    unset HTTPS_PROXY
+    echo -e "${GREEN}代理配置已清除！${RESET}"
+    echo ""
+    echo -n -e "${BOLD}按任意键返回主菜单...${RESET}"
+    read -n1 -s
+    show_main_menu
+    handle_main_menu
+}
 
 # ================= 绘制顶部标题 =================
 draw_header() {
