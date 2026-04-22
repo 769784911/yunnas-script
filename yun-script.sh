@@ -87,7 +87,7 @@ show_main_menu() {
     echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
     echo -e "${CYAN}║${RESET}                                                        ${CYAN}║${RESET}"
     echo -e "${CYAN}║${RESET}  ${GREEN}1${RESET}. 一键部署Docker容器  ${YELLOW}(推荐)${RESET}                    ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${GREEN}2${RESET}. 一键部署Docker脚本项目                        ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}  ${GREEN}2${RESET}. 配置代理服务                                  ${CYAN}║${RESET}"
     echo -e "${CYAN}║${RESET}  ${GREEN}3${RESET}. 一键查看容器初始化信息                        ${CYAN}║${RESET}"
     echo -e "${CYAN}║${RESET}  ${GREEN}4${RESET}. 一键删除所有容器和镜像                        ${CYAN}║${RESET}"
     echo -e "${CYAN}║${RESET}  ${GREEN}5${RESET}. 退出脚本                                     ${CYAN}║${RESET}"
@@ -115,10 +115,8 @@ handle_main_menu() {
             handle_selection
             ;;
         2)
-            echo -e "${YELLOW}功能开发中...${RESET}"
-            sleep 2
-            show_main_menu
-            handle_main_menu
+            show_proxy_menu
+            handle_proxy_menu
             ;;
         3)
             show_container_info
@@ -196,6 +194,96 @@ delete_all_containers() {
     show_main_menu
     handle_main_menu
 }
+
+# ================= 代理配置菜单 =================
+show_proxy_menu() {
+    clear
+    echo -e "${CYAN}╔════════════════════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYAN}║${RESET}  ${BOLD}配置代理服务${RESET}                                      ${CYAN}║${RESET}"
+    echo -e "${CYAN}╚════════════════════════════════════════════════════════════╝${RESET}"
+    echo ""
+    echo -e "${GREEN}1${RESET}. 配置代理服务"
+    echo -e "${YELLOW}2${RESET}. 回车跳过代理"
+    echo ""
+    echo -n -e "${BOLD}请输入选项: ${RESET}"
+}
+
+handle_proxy_menu() {
+    local choice
+    read choice
+
+    case $choice in
+        1)
+            configure_proxy
+            ;;
+        2|"")
+            echo -e "${GREEN}跳过代理配置${RESET}"
+            sleep 1
+            show_main_menu
+            handle_main_menu
+            ;;
+        *)
+            echo -e "${RED}无效选项${RESET}"
+            sleep 1
+            show_proxy_menu
+            handle_proxy_menu
+            ;;
+    esac
+}
+
+configure_proxy() {
+    echo ""
+    echo -n -e "${BOLD}请输入代理IP地址: ${RESET}"
+    read PROXY_IP
+
+    if [ -z "$PROXY_IP" ]; then
+        echo -e "${RED}IP不能为空${RESET}"
+        sleep 1
+        configure_proxy
+        return
+    fi
+
+    echo ""
+    echo -n -e "${BOLD}请输入代理端口: ${RESET}"
+    read PROXY_PORT
+
+    if [ -z "$PROXY_PORT" ]; then
+        echo -e "${RED}端口不能为空${RESET}"
+        sleep 1
+        configure_proxy
+        return
+    fi
+
+    echo ""
+    echo -e "${YELLOW}正在测试代理连通性...${RESET}"
+
+    # 测试代理连通性 (使用timeout 5秒检测)
+    if timeout 5 bash -c "curl -s --proxy http://${PROXY_IP}:${PROXY_PORT} https://www.google.com > /dev/null 2>&1" 2>/dev/null; then
+        echo -e "${GREEN}代理连通性测试通过！${RESET}"
+        echo -e "${GREEN}已保存代理配置: http://${PROXY_IP}:${PROXY_PORT}${RESET}"
+        echo "export HTTP_PROXY=http://${PROXY_IP}:${PROXY_PORT}" >> ~/.bashrc
+        echo "export HTTPS_PROXY=http://${PROXY_IP}:${PROXY_PORT}" >> ~/.bashrc
+    else
+        echo -e "${RED}代理连通性测试失败！${RESET}"
+        echo ""
+        echo -n -e "${YELLOW}是否继续使用此代理? (y/n): ${RESET}"
+        read confirm
+        if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+            echo -e "${GREEN}已保存代理配置（测试失败）: http://${PROXY_IP}:${PROXY_PORT}${RESET}"
+            echo "export HTTP_PROXY=http://${PROXY_IP}:${PROXY_PORT}" >> ~/.bashrc
+            echo "export HTTPS_PROXY=http://${PROXY_IP}:${PROXY_PORT}" >> ~/.bashrc
+        else
+            echo -e "${YELLOW}已取消代理配置${RESET}"
+        fi
+    fi
+
+    echo ""
+    echo -n -e "${BOLD}按任意键返回主菜单...${RESET}"
+    read -n1 -s
+    show_main_menu
+    handle_main_menu
+}
+
 
 # ================= 绘制顶部标题 =================
 draw_header() {
