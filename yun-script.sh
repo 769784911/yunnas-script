@@ -53,6 +53,7 @@ select_base_dir() {
     echo -e "${CYAN}╚════════════════════════════════════════════════════════════╝${RESET}"
     echo ""
     echo -e "${YELLOW}示例: /vol1/1000/docker 或 /home/username/nas${RESET}"
+    echo -e "${CYAN}直接回车使用默认路径: /vol1/1000/docker${RESET}"
     echo ""
     echo -n -e "${BOLD}请输入目录: ${RESET}"
     read BASE_DIR
