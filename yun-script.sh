@@ -82,13 +82,6 @@ select_base_dir() {
 # ================= 主菜单界面 =================
 show_main_menu() {
     clear
-    echo -e "${CYAN}╔════════════════════════════════════════════════════════════╗${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╗ ██████╗ ██████╗██╗ ██╗███████╗██████╗    ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╗ ██████╗ ██████╗██║ ██║███████╗██████╗    ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╗ ██████╗ ██████╗██║ ██║███████╗██████╗    ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██╔══██╗██╔══██╗██╔══██╗██║ ██║╚════██║██╔══██╗  ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╔╝╚██████╔╝╚██████╗██║ ██║███████╗██║  ██║  ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ╚═════╝  ╚═════╝  ╚═════╝╚═╝ ╚═╝╚══════╝╚═╝  ╚═╝  ${CYAN}║${RESET}"
     echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
     echo -e "${CYAN}║${RESET}          ${BOLD}${YELLOW}董云 NAS 一键部署${RESET}        ${YELLOW}V${CURRENT_VERSION}${RESET}                    ${CYAN}║${RESET}"
     echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
@@ -213,13 +206,6 @@ delete_all_containers() {
 # ================= 代理配置菜单 =================
 show_proxy_menu() {
     clear
-    echo -e "${CYAN}╔════════════════════════════════════════════════════════════╗${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╗ ██████╗ ██████╗██╗ ██╗███████╗██████╗    ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╗ ██████╗ ██████╗██║ ██║███████╗██████╗    ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╗ ██████╗ ██████╗██║ ██║███████╗██████╗    ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██╔══██╗██╔══██╗██╔══██╗██║ ██║╚════██║██╔══██╗  ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╔╝╚██████╔╝╚██████╗██║ ██║███████╗██║  ██║  ${CYAN}║${RESET}"
-    echo -e "${CYAN}║${RESET}  ${BOLD}  ╚═════╝  ╚═════╝  ╚═════╝╚═╝ ╚═╝╚══════╝╚═╝  ╚═╝  ${CYAN}║${RESET}"
     echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
     echo -e "${CYAN}║${RESET}          ${BOLD}${YELLOW}代理配置${RESET}                                ${CYAN}║${RESET}"
     echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
@@ -844,62 +830,6 @@ EOF
     fi
 }
 
-# ================= 以下是新增55个容器 (docker compose部署) =================
-deploy_moviepilot() { deploy_compose "moviepilot" "movienocii/moviepilot-frontend" 49100 3000 "自动化影视管理平台"; }
-deploy_iptv() { deploy_compose "iptv" "ecnmcc/iptv" 49101 81 "IPTV电视直播频道管理"; }
-deploy_homepage() { deploy_compose "homepage" "ghcr.io/benphelps/homepage" 49102 3000 "主页导航非常漂亮"; }
-deploy_homeassistant() { deploy_compose "homeassistant" "homeassistant/home-assistant" 49103 8123 "全屋智能家居中枢"; }
-deploy_navidrome() { deploy_compose "navidrome" "navidrome/navidrome" 49104 4533 "个人音乐服务器"; }
-deploy_moontv() { deploy_compose "moontv" "godkp/moontv:latest" 49105 10106 "家庭顶流免费影音媒体"; }
-deploy_libretv() { deploy_compose "libretv" "godkp/libretv:latest" 49106 10500 "全网顶流视频聚合网"; }
-deploy_emby2() { deploy_compose "emby" "emby/embyserver" 49107 8096 "影音媒体服务器"; }
-deploy_jellyfin2() { deploy_compose "jellyfin" "jellyfin/jellyfin" 49108 8096 "影音媒体服务器"; }
-deploy_qbittorrent2() { deploy_compose "qbittorrent" "linuxserver/qbittorrent" 49109 8080 "BT下载神器"; }
-deploy_transmission() { deploy_compose "transmission" "linuxserver/transmission" 49110 9091 "下载专用神器"; }
-deploy_synctv() { deploy_compose "synctv" "stilleshan/synctv" 49111 6677 "和朋友一起看电影"; }
-deploy_openlist() { deploy_compose "openlist" "alistorg/openlist" 49112 5244 "私人网络云盘"; }
-deploy_pansou() { deploy_compose "pansou" "stilleshan/pansou" 49113 8899 "免费网盘资源搜索"; }
-deploy_komga() { deploy_compose "komga" "gotson/komga" 49114 25600 "漫画阅读器"; }
-deploy_weizhi() { deploy_compose "weizhi" "ghcr.io/etwishcn/weizhi:latest" 49115 12345 "非常好用为知笔记"; }
-deploy_ddnsgo() { deploy_compose "ddnsgo" "tothemoon/ddns-go" 49116 9876 "动态域名解析"; }
-deploy_panel() { deploy_compose "panel" "filegang/panel" 49117 20000 "docker导航页面"; }
-deploy_drawio() { deploy_compose "drawio" "fjudith/drawio" 49118 8080 "网页绘图工具"; }
-deploy_qinglong() { deploy_compose "qinglong" "whyour/qinglong" 49119 5700 "青龙面板自动化"; }
-deploy_sonarr() { deploy_compose "sonarr" "linuxserver/sonarr" 49120 8989 "自动追剧追番"; }
-deploy_newsnow() { deploy_compose "newsnow" "benbusby/newsnow" 49121 4000 "实时新闻聚合阅读"; }
-deploy_prowlarr() { deploy_compose "prowlarr" "linuxserver/prowlarr" 49122 9696 "影视资源索引器"; }
-deploy_radarr() { deploy_compose "radarr" "linuxserver/radarr" 49123 7878 "电影资源刮削封面"; }
-deploy_suwayomi() { deploy_compose "suwayomi" "suwayomi/suwayomi" 49124 4567 "免费漫画在线阅读"; }
-deploy_reader() { deploy_compose "reader" "rankesi/reader" 49125 8899 "手机免费小说阅读"; }
-deploy_solara() { deploy_compose "solara" "sswrdr/solara" 49126 8000 "免费无损音乐下载"; }
-deploy_hongjing() { deploy_compose "hongjing" "sswrdr/hongjing" 49127 3000 "红色警戒网页版X86"; }
-deploy_rustpad() { deploy_compose "rustpad" "ekzhang/rustpad" 49128 8080 "协同文本编辑器"; }
-deploy_contra() { deploy_compose "contra" "sswrdr/contra" 49129 3000 "魂斗罗网页版X86"; }
-deploy_feiji() { deploy_compose "feiji" "sswrdr/feiji" 49130 3000 "疯狂飞机网页版X86"; }
-deploy_katelyatv() { deploy_compose "katelyatv" "katelyatv/katelyatv" 49131 8096 "超多影视聚合在线播放"; }
-deploy_playlistdl() { deploy_compose "playlistdl" "sswrdr/playlistdl" 49132 3000 "超好用音乐下载工具"; }
-deploy_anime() { deploy_compose "anime" "remotelystream/animedl" 49133 3000 "全自动下载看动漫追番"; }
-deploy_omnibox() { deploy_compose "omnibox" "sswrdr/omnibox" 49134 3000 "全自动看电影网盘整合"; }
-deploy_smartstrm() { deploy_compose "smartstrm" "smartstrm/smartstrm" 49135 8080 "STRM全自动生成工具"; }
-deploy_convertx() { deploy_compose "convertx" "sswrdr/convertx" 49136 3000 "超级格式转换工具"; }
-deploy_paintboard() { deploy_compose "paintboard" "stilleshan/paintboard" 49137 3000 "非常好用的在线画板"; }
-deploy_icons() { deploy_compose "icons" "macewan/icons" 49138 3000 "私人专用图标库"; }
-deploy_minipaint() { deploy_compose "minipaint" "timgabea/minipaint" 49139 3000 "强大的在线修图工具"; }
-deploy_panhub() { deploy_compose "panhub" "stilleshan/panhub" 49140 3000 "网盘资源搜索工具"; }
-deploy_audiobooks() { deploy_compose "audiobooks" "towerwatch/audiobooks" 49141 3000 "有声图书管理工具"; }
-deploy_xiaoaimusic() { deploy_compose "xiaoaimusic" "sswrdr/xiaoaimusic" 49142 3000 "小爱音箱播放器"; }
-deploy_cloudsaver() { deploy_compose "cloudsaver" "stilleshan/cloudsaver" 49143 3000 "网盘资源自动转存"; }
-deploy_ipttv() { deploy_compose "ipttv" "ecnmcc/ipttv" 49144 81 "全自动维护IPTV直播源"; }
-deploy_zfile() { deploy_compose "zfile" "zfile" 49145 8080 "私人网盘管理"; }
-deploy_halo() { deploy_compose "halo" "halohub/halo" 49146 8090 "最炫酷私人博客"; }
-deploy_ezbookkeeping() { deploy_compose "ezbookkeeping" "sswrdr/ezbookkeeping" 49147 3000 "家庭记账管理工具"; }
-deploy_simplemindmap() { deploy_compose "simplemindmap" "sswrdr/simplemindmap" 49148 3000 "在线制作思维导图"; }
-deploy_hivision() { deploy_compose "hivision" "shadow0039/hivision" 49149 3000 "一键生成证件照"; }
-deploy_homarr() { deploy_compose "homarr" "ghcr.io/benphelps/homepage" 49150 3000 "非常简洁的页面导航"; }
-deploy_talebook() { deploy_compose "talebook" "talebook/talebook" 49151 1234 "私人图书馆"; }
-deploy_memos() { deploy_compose "memos" "neosmemos/memos" 49152 5230 "强大的个人备忘录"; }
-deploy_bentopdf() { deploy_compose "bentopdf" "bento/bentopdf" 49153 3000 "私人PDF工具箱"; }
-deploy_nextcloud() { deploy_compose "nextcloud" "nextcloud" 49154 8080 "WPS远程协作"; }
 
 # ================= 通用docker compose部署函数 =================
 deploy_compose() {
