@@ -58,10 +58,8 @@ select_base_dir() {
     read BASE_DIR
 
     if [ -z "$BASE_DIR" ]; then
-        echo -e "${RED}目录不能为空！${RESET}"
-        sleep 1
-        select_base_dir
-        return
+        BASE_DIR="/vol1/1000/docker"
+        echo -e "${GREEN}使用默认目录: ${BASE_DIR}${RESET}"
     fi
 
     if [ ! -d "$BASE_DIR" ]; then
