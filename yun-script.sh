@@ -98,6 +98,7 @@ show_main_menu() {
     echo -e "${CYAN}║${RESET}   ${GREEN}3${RESET}) 一键查看容器初始化信息                                ${CYAN}║${RESET}"
     echo -e "${CYAN}║${RESET}   ${GREEN}4${RESET}) 一键删除所有容器和镜像                                ${CYAN}║${RESET}"
     echo -e "${CYAN}║${RESET}   ${GREEN}5${RESET}) 退出脚本                                              ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}   ${GREEN}6${RESET}) 工具                                                   ${CYAN}║${RESET}"
     echo -e "${CYAN}║${RESET}                                                            ${CYAN}║${RESET}"
     echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
     echo -e "${CYAN}║${RESET}              ${BOLD}提示: 使用数字键选择，按 Enter 确认${RESET}           ${CYAN}║${RESET}"
@@ -134,6 +135,10 @@ handle_main_menu() {
         5)
             echo -e "${GREEN}退出脚本，再见！${RESET}"
             exit 0
+            ;;
+        6)
+            show_tool_menu
+            handle_tool_menu
             ;;
         *)
             echo -e "${RED}无效选项，请重新选择${RESET}"
@@ -322,6 +327,66 @@ clear_proxy() {
     read -n1 -s
     show_main_menu
     handle_main_menu
+}
+
+# ================= 工具菜单 =================
+show_tool_menu() {
+    clear
+    echo -e "${CYAN}╔════════════════════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╗ ██████╗ ██████╗██╗ ██╗███████╗██████╗    ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╗ ██████╗ ██████╗██║ ██║███████╗██████╗    ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╗ ██████╗ ██████╗██║ ██║███████╗██████╗    ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}  ${BOLD}  ██╔══██╗██╔══██╗██╔══██╗██║ ██║╚════██║██╔══██╗  ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}  ${BOLD}  ██████╔╝╚██████╔╝╚██████╗██║ ██║███████╗██║  ██║  ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}  ${BOLD}  ╚═════╝  ╚═════╝  ╚═════╝╚═╝ ╚═╝╚══════╝╚═╝  ╚═╝  ${CYAN}║${RESET}"
+    echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
+    echo -e "${CYAN}║${RESET}          ${BOLD}${YELLOW}工具${RESET}                                           ${CYAN}║${RESET}"
+    echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
+    echo -e "${CYAN}║${RESET}                                                            ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}   ${GREEN}███████╗${RESET}╗${GREEN}██████${RESET}╗ ${GREEN}██${RESET}╗     ${GREEN}██${RESET}╗${GREEN}███${RESET}╗   ${GREEN}██${RESET}╗${GREEN}██████${RESET}╗ ${GREEN}██████${RESET}╗   ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}   ${GREEN}██${RESET}╔════╝${GREEN}██${RESET}╔══${GREEN}██${RESET}╗${GREEN}██${RESET}║     ${GREEN}██${RESET}║${GREEN}████${RESET}╗  ${GREEN}██${RESET}║${GREEN}██${RESET}╔════╝ ${GREEN}██${RESET}╔══${GREEN}██${RESET}╗   ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}   ${GREEN}███████${RESET}╗${GREEN}██████${RESET}╔╝${GREEN}██${RESET}║     ${GREEN}██${RESET}║${GREEN}██${RESET}╔${GREEN}██${RESET}╗ ${GREEN}██${RESET}║${GREEN}██${RESET}║      ${GREEN}██████${RESET}╔╝   ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}   ${GREEN}╚════██${RESET}║${GREEN}██${RESET}╔══${GREEN}██${RESET}╗${GREEN}██${RESET}║     ${GREEN}██${RESET}║${GREEN}██${RESET}║╚${GREEN}██${RESET}╗${GREEN}██${RESET}║${GREEN}██${RESET}║      ${GREEN}██${RESET}╔══${GREEN}██${RESET}╗   ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}   ${GREEN}███████${RESET}║${GREEN}██${RESET}║  ${GREEN}██${RESET}║${GREEN}██████${RESET}╗${GREEN}██${RESET}║${GREEN}██${RESET}║ ╚${GREEN}████${RESET}║║${GREEN}╚██████${RESET}╗${GREEN}██${RESET}║  ${GREEN}██${RESET}║   ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}   ${GREEN}╚══════${RESET}╝╚═╝  ╚═╝${GREEN}╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝   ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}                                                            ${CYAN}║${RESET}"
+    echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
+    echo -e "${CYAN}║${RESET}   ${GREEN}1${RESET}) 构建代理                                              ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}   ${YELLOW}b${RESET}) 返回主菜单                                           ${CYAN}║${RESET}"
+    echo -e "${CYAN}║${RESET}                                                            ${CYAN}║${RESET}"
+    echo -e "${CYAN}╠════════════════════════════════════════════════════════════╣${RESET}"
+    echo -e "${CYAN}║${RESET}              ${BOLD}提示: 使用数字键选择，按 Enter 确认${RESET}           ${CYAN}║${RESET}"
+    echo -e "${CYAN}╚════════════════════════════════════════════════════════════╝${RESET}"
+    echo ""
+    echo -n -e "${BOLD}请输入选项: ${RESET}"
+}
+
+handle_tool_menu() {
+    local choice
+    read choice
+
+    case $choice in
+        1)
+            build_singbox
+            ;;
+        b|B|"")
+            show_main_menu
+            handle_main_menu
+            ;;
+        *)
+            echo -e "${RED}无效选项${RESET}"
+            sleep 1
+            show_tool_menu
+            handle_tool_menu
+            ;;
+    esac
+}
+
+build_singbox() {
+    echo ""
+    echo -e "${YELLOW}正在启动 Sing-box 构建脚本...${RESET}"
+    sleep 1
+    bash <(curl -Ls https://raw.githubusercontent.com/eooce/sing-box/main/sing-box.sh)
 }
 
 # ================= 绘制顶部标题 =================
