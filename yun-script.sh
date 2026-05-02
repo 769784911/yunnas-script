@@ -385,8 +385,11 @@ handle_tool_menu() {
 build_singbox() {
     echo ""
     echo -e "${YELLOW}正在启动 Sing-box 构建脚本...${RESET}"
-    echo ""
-    exec curl -Ls https://raw.githubusercontent.com/eooce/sing-box/main/sing-box.sh | bash
+    sleep 1
+    TMPFILE=$(mktemp /tmp/sing-box-XXXXXX.sh)
+    curl -Ls https://raw.githubusercontent.com/eooce/sing-box/main/sing-box.sh -o "$TMPFILE"
+    chmod +x "$TMPFILE"
+    exec bash "$TMPFILE"
 }
 
 # ================= 绘制顶部标题 =================
