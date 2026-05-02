@@ -386,12 +386,7 @@ build_singbox() {
     echo ""
     echo -e "${YELLOW}正在启动 Sing-box 构建脚本...${RESET}"
     echo ""
-    curl -Ls https://raw.githubusercontent.com/eooce/sing-box/main/sing-box.sh | bash
-    echo ""
-    echo -n -e "${BOLD}按任意键返回工具菜单...${RESET}"
-    read -n1 -s
-    show_tool_menu
-    handle_tool_menu
+    exec curl -Ls https://raw.githubusercontent.com/eooce/sing-box/main/sing-box.sh | bash
 }
 
 # ================= 绘制顶部标题 =================
